@@ -279,6 +279,7 @@ if ( ! class_exists( 'Easy_Property_Listings' ) ) :
 				require_once EPL_PATH_LIB . 'hooks/hook-floorplan.php';
 				require_once EPL_PATH_LIB . 'hooks/hook-mini-web.php';
 				require_once EPL_PATH_LIB . 'hooks/hook-read-more.php';
+				require_once EPL_PATH_LIB . 'hooks/hook-statement-of-information.php';
 			}
 
 			require_once EPL_PATH_LIB . 'includes/install.php';

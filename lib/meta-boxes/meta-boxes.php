@@ -1511,6 +1511,11 @@ function epl_meta_box_init() {
 							'type'		=>	'file',
 							'include'	=>	array('commercial', 'business', 'commercial_land'),
 						),
+						array(
+							'name'		=>	'property_statement_of_information',
+							'label'		=>	__('Statement of Information', 'easy-property-listings' ),
+							'type'		=>	'file',
+						)
 					)
 				)
 			)
