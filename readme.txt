@@ -1,12 +1,12 @@
-﻿=== Easy Property Listings ===
-Author URI: http://www.realestateconnected.com.au/
+=== Easy Property Listings ===
+Author URI: https://www.realestateconnected.com.au/
 Plugin URI: https://easypropertylistings.com.au/
 Contributors: mervb1
 Donate link: https://easypropertylistings.com.au/support-the-site/
 Tags: real estate, property, listings, CRM, contact management, reports
 Requires at least: 3.9
-Tested up to: 5.4.2
-Stable Tag: 3.4.29
+Tested up to: 5.5.1
+Stable Tag: 3.4.34
 License: GNU Version 2 or Any Later Version
 
 Fast. Flexible. Forward-thinking solution for real estate agents using WordPress. Built for scale, listing management, contact generation and works with any theme.
@@ -29,6 +29,7 @@ Now you can promote your listings and automate lead generation
 * 100s of ready to use theme templates available for free.
 * No code necessary. Infinite options. Just select and save.
 * Instantly works with popular themes Genesis, Headway, iThemes Builder, Avada.
+* Great with page builders like Elementor, WP Bakery, Visual Composer.
 * Fully customisable and works with any Theme or framework.
 * Personalise for your market in seconds.
 * 100% responsive and mobile ready.
