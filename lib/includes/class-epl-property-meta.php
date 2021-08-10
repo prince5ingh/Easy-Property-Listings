@@ -279,12 +279,13 @@ class EPL_Property_Meta {
 	 * Auction Date/Time
 	 *
 	 * @since 2.0
+         * @since 3.4.7 Auction date seperator filter.
 	 * @param bool $admin true/false True will return on frontend.
 	 * @return string formatted auction date
 	 */
 	public function get_property_auction( $admin = false ) {
 
-		$date_time_sep = ' \a\t ';
+		$date_time_sep = apply_filters( 'epl_auction_date_seperator', ' \a\t ' );
 
 		$date_format = epl_get_inspection_date_format();
 		$time_format = epl_get_inspection_time_format();
@@ -1688,6 +1689,7 @@ class EPL_Property_Meta {
 	 * Get Building area
 	 *
 	 * @since 2.0
+	 * @since 3.4.37 Fix: don't display land area when it's < 0.
 	 * @param string $returntype Options i = span, v = raw value, t = text, d = string, l = list item.
 	 * @return string
 	 */
@@ -1708,7 +1710,7 @@ class EPL_Property_Meta {
 
 		$building_unit = apply_filters( 'epl_property_building_area_unit_label', $building_unit );
 
-		if ( intval( $this->get_property_meta( 'property_building_area' ) ) !== 0 ) {
+		if ( is_numeric( $this->get_property_meta( 'property_building_area' ) ) && 0 < $this->get_property_meta( 'property_building_area' ) ) {
 
 			$label = apply_filters( 'epl_get_property_building_area_label', __( 'Floor Area is', 'easy-property-listings' ) );
 

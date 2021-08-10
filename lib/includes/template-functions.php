@@ -550,7 +550,7 @@ function epl_property_author_box_simple_grav() {
  *
  * @since 3.4.13 for custom display, file extension not required and file name format enforced to the format widget-content-listing-{$display}.php
  */
-function epl_property_widget( $display, $image, $title, $icons, $more_text = "__('Read More','easy-property-listings' )", $d_excerpt, $d_suburb, $d_street, $d_price, $d_more, $d_inspection_time, $d_ical_link ) {
+function epl_property_widget( $display, $image, $title, $icons, $d_excerpt, $d_suburb, $d_street, $d_price, $d_more, $d_inspection_time, $d_ical_link, $more_text = "__('Read More','easy-property-listings' )" ) {
 	global $property;
 
 	if ( is_null( $property ) ) {
@@ -2926,7 +2926,7 @@ function epl_esc_attr( $value ) {
  * Post Count
  *
  * @since      2.2.0
- *
+ * @since      3.4.37 Fix : optional param before requried param.
  * @param      string $type        The type.
  * @param      string $meta_key    The meta key.
  * @param      string $meta_value  The meta value.
@@ -2934,7 +2934,7 @@ function epl_esc_attr( $value ) {
  *
  * @return     null
  */
-function epl_get_post_count( $type = '', $meta_key, $meta_value, $author_id = '' ) {
+function epl_get_post_count( $type, $meta_key, $meta_value, $author_id = '' ) {
 	global $wpdb;
 
 	$sql = "

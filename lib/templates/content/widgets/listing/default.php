@@ -27,7 +27,7 @@ if ( $query->have_posts() ) {
 	}
 	while ( $query->have_posts() ) {
 		$query->the_post();
-		epl_property_widget( $instance['display'], $instance['image'], $instance['d_title'], $instance['d_icons'], $instance['more_text'], $instance['d_excerpt'], $instance['d_suburb'], $instance['d_street'], $instance['d_price'], $instance['d_more'], $instance['d_inspection_time'], $instance['d_ical_link'] );
+		epl_property_widget( $instance['display'], $instance['image'], $instance['d_title'], $instance['d_icons'], $instance['d_excerpt'], $instance['d_suburb'], $instance['d_street'], $instance['d_price'], $instance['d_more'], $instance['d_inspection_time'], $instance['d_ical_link'], $instance['more_text'] );
 	}
 		wp_reset_postdata();
 	if ( 'list' === $instance['display'] ) {
