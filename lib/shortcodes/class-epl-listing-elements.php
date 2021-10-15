@@ -55,6 +55,7 @@ class EPL_Listing_Elements {
 
 		if ( is_null( $property ) ) {
 
+                        
 			$key_name = '';
 
 			switch ( $atts['type'] ) {
@@ -74,6 +75,11 @@ class EPL_Listing_Elements {
 			}
 
 			ob_start();
+			
+			if ( ! is_user_logged_in() || ! current_user_can( 'edit_others_pages' ) ) {
+                                return apply_filters( 'epl_listing_element_no_listing_message', ob_get_clean(), $atts );
+                        }
+			
 			echo '[ ' . esc_html__( 'Listing', 'easy-property-listings' ) . ' ' . esc_attr( ucwords( $atts['type'] ) );
 
 			if ( ! empty( $key_name ) ) {
@@ -81,7 +87,7 @@ class EPL_Listing_Elements {
 			}
 			echo ' ]';
 
-			return ob_get_clean();
+			return apply_filters( 'epl_listing_element_no_listing_message', ob_get_clean(), $atts );
 		}
 
 		$return = '';
