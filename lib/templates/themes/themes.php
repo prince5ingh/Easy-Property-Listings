@@ -53,8 +53,10 @@ function epl_load_core_templates( $template ) {
 
 			if ( is_array( $_GET['post_type'] ) ) {
 				$post_tpl = 'search-listing.php';
+                                $archive_tpl = 'archive-listing.php';
 			} else {
 				$post_tpl = 'search-' . sanitize_title( wp_unslash( $_GET['post_type'] ) ) . '.php';
+                                $archive_tpl = 'archive-' . sanitize_title( wp_unslash( $_GET['post_type'] ) ) . '.php';
 			}
 		}
 		$find[] = $post_tpl;
