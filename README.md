@@ -38,12 +38,45 @@ There are various ways you can contribute:
 
 ## Change Log
 
-= 3.6.0 July 13, 2026 =
+= 3.5.28 October 14, 2026 =
 
--   New: Full Site Editing templates for EPL listing and Staff Directory archives and single pages.
--   New: Server-rendered Site Editor previews for EPL template blocks.
--   Fix: EPL search, feature and business-category archives now use EPL layouts in block themes.
--   Fix: Preserve classic-theme rendering and guard block APIs on older WordPress versions.
+-   Fix: REST API listing meta for users who cannot edit the listing is now an allow-list of fields the listing displays, instead of removing known hidden fields. Fields hidden by site settings (bond, country and city) and by listing settings are withheld, and fields added by extensions are no longer public unless allowed. Thanks Usama Arshad and WPScan.
+-   New: Added `epl_rest_api_public_meta_keys` filter to make additional listing meta fields public in the REST API.
+
+= 3.5.27 October 13, 2026 =
+
+-   Fix: Unauthenticated information disclosure via the REST API; listing meta fields hidden by the display settings (price, sold price, rent, street address and map coordinates) and internal fields such as the linked owner contact are now only returned to users who can edit the listing. Thanks Usama Arshad and WPScan.
+-   Fix: Subscriber-level disclosure of CRM contact records; the contact activity table, contact listing table, contact search and contact listing search AJAX actions now require contact access, matching their write actions. Thanks Usama Arshad and WPScan.
+-   Fix: User search AJAX action now requires the `edit_posts` capability.
+-   New: Added `epl_rest_api_private_meta_keys` filter to adjust which listing meta fields are hidden from the public REST API.
+
+= 3.5.26 October 12, 2026 =
+
+-   Fix: Unauthenticated Reflected Cross-Site Scripting via the `epl_action` request parameter and the search widget select field; `data-min` and `data-max` attributes are now escaped on output. Thanks Patchstack.
+-   Fix: The `epl_action` and `epl-action` request parameters now only dispatch an allow-list of actions for logged in users, instead of firing any `epl_*` hook with the raw request.
+-   New: Added `epl_allowed_request_actions` filter to register additional request actions.
+-   Fix: Search widget available terms query now escapes taxonomy, post type and listing status values with `$wpdb->prepare()`.
+-   Fix: Escaped bed and bath icon output in the listing widget templates and the legacy author card.
+-   Fix: Legacy author card called `wp_kses()` with a missing argument.
+-   Fix: Replaced deprecated `get_terms()` taxonomy parameter usage.
+-   Fix: Contact search no longer suppresses query filters.
+-   Fix: Added direct file access protection to theme compatibility templates.
+-   Tweak: Added License and License URI plugin headers and corrected Domain Path.
+-   Tweak: Tested up to WordPress 7.1.
+-   Tweak: Added security vulnerability reporting contact to the readme and `SECURITY.md`.
+
+= 3.5.25 July 30, 2026 =
+
+-   Fix: Authenticated (Subscriber+) Stored Cross-Site Scripting via user contact methods (CVE-2026-16684); author box social/contact profile links, bio and video URL are now escaped on output, with matching sanitization at the user meta layer. Thanks Wordfence PRISM.
+-   Fix: Pinterest author icon (SVG variant) linked to the Instagram URL instead of Pinterest.
+-   Fix: Broken Access Control hardening of the contact capture form (`[listing_contact]` / `[epl_contact_form]`); submissions now run through a shared validation and persistence handler with nonce, honeypot and input sanitization. Thanks Samuel Pagès Chartier.
+-   New: Per-IP rate limiting on anonymous contact capture submissions to prevent spam and database write amplification.
+-   New: Added `epl_contact_capture_rate_limit_max` and `epl_contact_capture_rate_limit_window` filters to tune or disable contact capture throttling.
+-   New: Added `epl_contact_capture_user_can_manage` filter to control which users are exempt from contact capture throttling.
+-   New: Contact capture form now accepts an explicit `listing_id` attribute, eg. `[listing_contact listing_id="123"]`.
+-   Fix: Contact activity notes were hidden on WordPress 7.0 (core 6.9) due to the new reserved `note` comment type; EPL now requests the type explicitly so CRM activities display again.
+-   Fix: Contact capture now always logs an activity with the enquired listing so agents see every form submission, even when no message is entered.
+-   Tweak: Contact capture AJAX and direct form submissions now share a single validation path so direct POSTs cannot bypass request checks.
 
 = 3.5.24 June 20, 2026 =
 
