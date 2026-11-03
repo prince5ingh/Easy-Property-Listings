@@ -3590,6 +3590,7 @@ function epl_contact_capture_rate_limit_exceeded() {
  * @param array $request Submitted request data.
  * @return true|WP_Error
  * @since 3.5.25
+ * @since 3.5.29 Fires epl_contact_capture_submitted after a successful submission.
  */
 function epl_process_contact_capture_request( $request ) {
 	if ( ! is_array( $request ) || ! empty( $request['epl_contact_anti_spam'] ) ) {
@@ -3658,36 +3659,67 @@ function epl_process_contact_capture_request( $request ) {
 		? $contact_listing_note
 		: __( 'Enquiry submitted via contact form.', 'easy-property-listings' );
 
-	$contact = new EPL_Contact( $email );
-	if ( ! empty( $contact->ID ) ) {
-		if ( $contact_listing_id ) {
-			$contact->attach_listing( $contact_listing_id );
+	$contact     = new EPL_Contact( $email );
+	$new_contact = empty( $contact->ID );
+
+	if ( $new_contact ) {
+		$contact_data = array(
+			'name'  => $title,
+			'email' => $email,
+		);
+
+		if ( ! $contact->create( $contact_data ) ) {
+			return new WP_Error( 'epl_contact_capture_create_failed', __( 'There was a problem with your submission.', 'easy-property-listings' ) );
 		}
 
-		$contact->add_note( $activity_note, 'note', $contact_listing_id );
-
-		return true;
+		$contact->update_meta( 'contact_first_name', $fname );
+		$contact->update_meta( 'contact_last_name', $lname );
+		$contact->update_meta( 'contact_phones', array( 'phone' => $phone ) );
+		$contact->update_meta( 'contact_category', 'widget' );
 	}
-
-	$contact_data = array(
-		'name'  => $title,
-		'email' => $email,
-	);
-
-	if ( ! $contact->create( $contact_data ) ) {
-		return new WP_Error( 'epl_contact_capture_create_failed', __( 'There was a problem with your submission.', 'easy-property-listings' ) );
-	}
-
-	$contact->update_meta( 'contact_first_name', $fname );
-	$contact->update_meta( 'contact_last_name', $lname );
-	$contact->update_meta( 'contact_phones', array( 'phone' => $phone ) );
-	$contact->update_meta( 'contact_category', 'widget' );
 
 	if ( $contact_listing_id ) {
 		$contact->attach_listing( $contact_listing_id );
 	}
 
 	$contact->add_note( $activity_note, 'note', $contact_listing_id );
+
+	/**
+	 * Fires after a contact form submission has been validated and stored.
+	 *
+	 * Use this to forward the enquiry elsewhere. Every value in $submission is
+	 * already sanitized; $request is the raw submitted data for custom fields.
+	 *
+	 * @since 3.5.29
+	 *
+	 * @param array       $submission {
+	 *     @type string $email       Email address.
+	 *     @type string $first_name  First name.
+	 *     @type string $last_name   Last name.
+	 *     @type string $name        Display name.
+	 *     @type string $phone       Phone number.
+	 *     @type string $message     Message, empty when none was entered.
+	 *     @type int    $listing_id  Listing post ID, 0 when not sent from a listing.
+	 *     @type bool   $new_contact True when this submission created the contact.
+	 * }
+	 * @param EPL_Contact $contact    The contact the submission was stored against.
+	 * @param array       $request    Raw submitted request data.
+	 */
+	do_action(
+		'epl_contact_capture_submitted',
+		array(
+			'email'       => $email,
+			'first_name'  => $fname,
+			'last_name'   => $lname,
+			'name'        => $title,
+			'phone'       => $phone,
+			'message'     => $contact_listing_note,
+			'listing_id'  => $contact_listing_id,
+			'new_contact' => $new_contact,
+		),
+		$contact,
+		$request
+	);
 
 	return true;
 }
